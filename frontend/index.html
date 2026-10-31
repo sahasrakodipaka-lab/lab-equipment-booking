@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse laboratory equipment and request a booking.">
+  <title>Lab Equipment Booking</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Lab Equipment Booking home"><span class="brand-mark">LE</span><span>Lab<span class="brand-light">Book</span></span></a>
+    <nav><a href="#equipment">Equipment</a><a href="#my-booking">My booking</a><button class="nav-admin" id="admin-open" type="button">Admin</button></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">LABORATORY RESOURCE PORTAL</p>
+        <h1>Book the tools<br>that move ideas <span>forward.</span></h1>
+        <p class="hero-description">Find the equipment you need, choose your lab time, and send a booking request in a few simple steps.</p>
+        <a class="primary-link" href="#equipment">Explore equipment <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orb orb-one"></div><div class="orb orb-two"></div>
+        <div class="lab-card"><span class="lab-icon">⌁</span><div class="lab-lines"><i></i><i></i><i></i></div><span class="lab-card-label">READY FOR YOUR NEXT EXPERIMENT</span></div>
+        <span class="float-tag tag-top">01 / DISCOVER</span><span class="float-tag tag-bottom">02 / RESERVE</span>
+      </div>
+    </section>
+
+    <section class="section equipment-section" id="equipment">
+      <div class="section-heading"><div><p class="eyebrow">AVAILABLE RESOURCES</p><h2>Equipment catalogue</h2><p class="muted">Choose a resource to prefill your booking request.</p></div><div class="search-wrap"><label class="sr-only" for="equipment-search">Search equipment</label><input id="equipment-search" type="search" placeholder="Search equipment..."></div></div>
+      <div id="equipment-list" class="equipment-grid"><div class="loading-card">Loading equipment…</div></div>
+    </section>
+
+    <section class="section booking-layout">
+      <div class="section-intro"><p class="eyebrow">MAKE A RESERVATION</p><h2>Plan your lab session.</h2><p class="muted">Submit a request with your details and preferred time. Keep the booking code shown after submission to look up or cancel your request.</p>
+      <div class="step-list"><div><span>01</span><p><b>Choose equipment</b><small>Browse the catalogue above.</small></p></div><div><span>02</span><p><b>Set your time</b><small>Enter a start and end time.</small></p></div><div><span>03</span><p><b>Save your code</b><small>Use it to check your request later.</small></p></div></div></div>
+      <form id="booking-form" class="panel form-panel">
+        <div class="panel-heading"><div><p class="eyebrow">BOOKING REQUEST</p><h3>Reservation details</h3></div><span class="panel-number">01—03</span></div>
+        <div class="form-grid">
+          <div class="field full"><label for="equipment-id">Equipment <span>*</span></label><select id="equipment-id" name="equipmentId" required><option value="">Loading equipment…</option></select></div>
+          <div class="field"><label for="student-name">Full name <span>*</span></label><input id="student-name" name="studentName" maxlength="100" required placeholder="Your name"></div>
+          <div class="field"><label for="student-email">College email <span>*</span></label><input id="student-email" name="studentEmail" type="email" maxlength="254" required placeholder="you@college.edu"></div>
+          <div class="field"><label for="start-at">Start date & time <span>*</span></label><input id="start-at" name="startAt" type="datetime-local" required></div>
+          <div class="field"><label for="end-at">End date & time <span>*</span></label><input id="end-at" name="endAt" type="datetime-local" required></div>
+          <div class="field full"><label for="purpose">Purpose of use <span>*</span></label><textarea id="purpose" name="purpose" rows="3" maxlength="500" required placeholder="Briefly describe your lab work"></textarea></div>
+        </div>
+        <button class="button button-primary button-wide" type="submit" id="submit-booking">Submit booking request <span>→</span></button>
+        <p class="form-note">Fields marked * are required. Requests are subject to lab approval.</p>
+        <div id="booking-message" class="message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="section lookup-section" id="my-booking">
+      <div><p class="eyebrow">BOOKING STATUS</p><h2>Find your request.</h2><p class="muted">Enter the booking ID and private booking code you received after submitting.</p></div>
+      <form id="lookup-form" class="lookup-form panel">
+        <div class="field"><label for="lookup-id">Booking ID</label><input id="lookup-id" required placeholder="Booking ID"></div>
+        <div class="field"><label for="lookup-code">Booking code</label><input id="lookup-code" required placeholder="Your private code" autocomplete="off"></div>
+        <button class="button button-dark" type="submit">Find booking</button>
+        <div id="lookup-result" class="message full" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="section admin-section" id="admin-panel" hidden>
+      <div class="section-heading"><div><p class="eyebrow">RESTRICTED AREA</p><h2>Lab administration</h2><p class="muted">Use the administrator key configured by the project owner.</p></div><button id="admin-close" class="button button-outline" type="button">Close admin</button></div>
+      <form id="admin-login" class="panel admin-key-form"><div class="field"><label for="admin-key">Administrator key</label><input id="admin-key" type="password" autocomplete="current-password" required placeholder="Enter admin key"></div><button class="button button-dark" type="submit">Open dashboard</button><p class="muted small">The key is kept only in this browser tab's session storage. Never share it or commit it to GitHub.</p></form>
+      <div id="admin-dashboard" hidden>
+        <div class="admin-toolbar"><h3>Booking requests</h3><button id="refresh-admin" class="button button-outline" type="button">Refresh</button></div>
+        <div id="admin-bookings" class="table-wrap"></div>
+        <form id="add-equipment-form" class="panel add-equipment-form">
+          <h3>Add equipment</h3><div class="form-grid">
+            <div class="field"><label for="new-name">Equipment name</label><input id="new-name" name="name" required maxlength="120"></div>
+            <div class="field"><label for="new-category">Category</label><input id="new-category" name="category" required maxlength="80"></div>
+            <div class="field"><label for="new-location">Lab / location</label><input id="new-location" name="location" required maxlength="120"></div>
+            <div class="field"><label for="new-quantity">Quantity</label><input id="new-quantity" name="quantity" type="number" min="1" max="1000" value="1" required></div>
+            <div class="field full"><label for="new-description">Description</label><textarea id="new-description" name="description" rows="2" maxlength="500"></textarea></div>
+          </div><button class="button button-primary" type="submit">Add equipment</button><div id="equipment-admin-message" class="message" role="status"></div>
+        </form>
+      </div>
+      <div id="admin-message" class="message" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+  <footer><div class="footer-brand">LabBook <span>·</span> Lab Equipment Booking</div><p>Made for smoother lab sessions. Use equipment responsibly and follow your institution's safety rules.</p><span class="footer-year">STUDENT PROJECT / 2026</span></footer>
+</body>
+</html>
